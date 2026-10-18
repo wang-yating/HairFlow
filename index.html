@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="HairFlow: Modeling 3D Hair Strands with Multi-Modal Conditioned Diffusion.">
+  <title>HairFlow: Modeling 3D Hair Strands with Multi-Modal Conditioned Diffusion</title>
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="style.css?v=20261011-pages">
+  <script src="assets/cases.js?v=20261011-random" defer></script>
+  <script src="script.js?v=20261011-pages" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header">
+    <a class="wordmark" href="#top">HairFlow</a>
+    <nav aria-label="Main navigation"><a href="#method">Method</a><a href="#results">Results</a><a href="#comparisons">Comparisons</a><a href="#simulation">Simulation</a></nav>
+  </header>
+  <main id="main">
+    <section class="hero container" id="top">
+      <h1><span>HairFlow</span>: Modeling 3D Hair Strands<br class="desktop-break"> with Multi-Modal Conditioned Diffusion</h1>
+      <div class="authors">
+        <span>Yating Wang<sup>1,2</sup></span><span>Kui Wu<sup>2</sup></span><span>Ran Yi<sup>1</sup></span><span>Zixuan Lu<sup>2</sup></span><span>Tongtong Wang<sup>2</sup></span><span>Zhongtian Zheng<sup>2</sup></span><span>Lizhuang Ma<sup>1,*</sup></span><span>Yuefan Shen<sup>2</sup></span>
+      </div>
+      <p class="affiliations"><span><sup>1</sup> Shanghai Jiao Tong University</span><span><sup>2</sup> LightSpeed Studio</span></p>
+      <p class="corresponding-author">* Corresponding author</p>
+      <figure class="teaser">
+        <a href="assets/images/teaser.webp" data-lightbox>
+          <img src="assets/images/teaser.webp" alt="Input images, inferred sketches and meshes, and HairFlow strand results across four hairstyles." width="3000" height="928" fetchpriority="high">
+        </a>
+        <figcaption>HairFlow uses conditioned diffusion to recover 3D strands from image inputs, guided by 3D mesh and sketches inferred by foundation models. It handles complex hairstyles and stylized images while closely adhering to the input conditions.</figcaption>
+      </figure>
+      <div class="abstract" id="abstract">
+        <h2>Abstract</h2>
+        <p>Modeling 3D hair strands is challenging due to complex hairstyle geometry, scarce high-quality training data, and incomplete or noisy input observations. Foundation models offer broader hairstyle priors, but their outputs are not directly usable for strand-based rendering and simulation. Existing approaches require costly per-instance optimization to fit hair priors to meshes from foundation models and 2D orientations from specialized predictors trained on limited hair data, restricting efficiency and generalization. We present HairFlow, a multimodal conditioned diffusion framework for efficient and controllable hair strands modeling. HairFlow conditions strand generation on two complementary representations: a coarse mesh that constrains global shape and multi-view sketches that specify local strand flow. HairFlow combines an Orientation VAE with a conditioned diffusion transformer to generate volumetric fields that are traced into explicit strands. To overcome the lack of paired sketch–strand training data, we introduce an automatic synthesis pipeline that generates geometrically aligned multi-view sketches with diverse styles representative of inference-time inputs. Experiments show that HairFlow generates plausible 3D strands that faithfully follow the input conditions across diverse hairstyles, substantially reduces inference time, and supports flexible multimodal control.</p>
+      </div>
+    </section>
+    <section class="section container" id="method">
+      <h2>Method</h2>
+      <figure><a href="assets/images/hairdiffusion_pipeline.webp" data-lightbox>
+        <img src="assets/images/hairdiffusion_pipeline.webp" alt="HairFlow pipeline: mesh and sketch condition encoding, latent diffusion, orientation decoding and strand extraction." width="3000" height="1085" loading="lazy">
+      </a><figcaption class="pipeline-caption">Overview of HairFlow. HairFlow takes two geometric inputs—a coarse hair mesh and multi-view sketches—to specify global shape and local strand flow. These conditions can be obtained from images or text using foundation models, or provided by artists. Mesh and camera-aware sketch encoders produce tokens that condition a diffusion transformer through cross-attention. The transformer generates latents in the space of a pretrained Orientation VAE, which decodes them into an orientation field for explicit strand extraction.</figcaption></figure>
+    </section>
+    <section class="section container" id="results">
+      <h2>Results</h2>
+      <p class="instructions">12 examples · 4 per page. Select a page to explore more hairstyles.</p>
+      <p class="instructions">Drag the mesh or strands to rotate both views together.</p>
+      <p class="display-note">Synchronized, pre-rendered views · 8 angles per example · no 3D model download.</p>
+      <nav class="result-pagination" aria-label="Results pages, top"></nav>
+      <div class="results-labels" aria-hidden="true"><span>Input image</span><span>3D mesh</span><span>Sketch</span><span>Strands</span></div>
+      <div id="results-rows" aria-live="polite"></div>
+      <nav class="result-pagination" data-bottom aria-label="Results pages, bottom"></nav>
+      <noscript><p>Enable JavaScript to browse the twelve result examples.</p></noscript>
+    </section>
+    <section class="section container" id="comparisons">
+      <h2>Comparisons</h2>
+      <figure class="comparison">
+        <a href="assets/images/baselines.webp" data-lightbox><img src="assets/images/baselines.webp" alt="Qualitative comparisons with HairStep, DiffLocks, Im2HairCut, HairLRM and HairFlow." width="3000" height="2908" loading="lazy"></a>
+        <figcaption class="pipeline-caption">Qualitative comparison of single-view 3D hair reconstruction. HairLRM and HairFlow share the same input mesh, supplemented by HairStep orientation maps or sketches from image generation models, respectively. Inputs appear to the left of the corresponding strands. The color wheel below HairLRM illustrates the direction-to-color mapping.</figcaption>
+      </figure>
+    </section>
+    <section class="section container" id="simulation">
+      <h2>Simulation</h2>
+      <p class="instructions">We simulate wind blowing through the generated hair strands in Unreal Engine.</p>
+      <div class="simulation-grid">
+        <figure><video controls playsinline loop muted preload="none" poster="assets/images/video-10.jpg" aria-label="Short-hair wind simulation"><source src="assets/videos/video-10.mp4" type="video/mp4"><a href="assets/videos/video-10.mp4">Download video.</a></video></figure>
+        <figure><video controls playsinline loop muted preload="none" poster="assets/images/video-11.jpg" aria-label="Long-hair wind simulation"><source src="assets/videos/video-11.mp4" type="video/mp4"><a href="assets/videos/video-11.mp4">Download video.</a></video></figure>
+      </div>
+    </section>
+  </main>
+  <footer class="container">HairFlow</footer>
+  <dialog id="lightbox" aria-label="Expanded figure">
+    <div class="lightbox-toolbar"><button type="button" id="zoom-toggle">Actual size</button><a id="lightbox-original" href="assets/images/teaser.webp" target="_blank" rel="noopener">Open image ↗</a><button type="button" id="lightbox-close">Close ×</button></div>
+    <div class="lightbox-viewport"><img id="lightbox-image" src="assets/images/teaser.webp" alt=""></div>
+    <p id="lightbox-caption"></p>
+  </dialog>
+</body>
+</html>
